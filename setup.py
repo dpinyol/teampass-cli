@@ -18,7 +18,7 @@ with open('tpcli/__init__.py') as f:
 with open(path.join(here, 'README.rst'), encoding='utf-8') as readme_file:
     readme = readme_file.read()
 
-with open('requirements.txt') as requirements_file:
+with open(path.join(here, 'requirements.txt'), encoding='utf-8') as requirements_file:
     requirements = requirements_file.read()
 
 setup(
