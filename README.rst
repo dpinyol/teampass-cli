@@ -28,7 +28,7 @@ Installation
 
   pip install git+http://github.com/verdel/teampass-cli
 
-*or*
+**or**
 
 ::
 
@@ -45,7 +45,7 @@ Usage
 ::
 
 
-  **tpcli --help**
+  tpcli --help
   Usage: -c [OPTIONS] COMMAND [ARGS]...
   Options:
     --api-endpoint TEXT  Teampass API endpoint.
@@ -60,7 +60,7 @@ Usage
     search  search entry in Teampass
 
 
-  **tpcli add --help**
+  tpcli add --help
   Usage: -c add [OPTIONS]
 
   Add entry to Teampass.
@@ -78,7 +78,7 @@ Usage
     --help              Show this message and exit.
 
 
-  **tpcli delete --help**
+  tpcli delete --help
   Usage: -c delete [OPTIONS]
 
   Delete entry from Teampass.
@@ -90,7 +90,7 @@ Usage
     --help     Show this message and exit.
 
 
-  **tpcli edit --help**
+  tpcli edit --help
   Usage: -c edit [OPTIONS]
 
   Edit entry in Teampass.
@@ -109,7 +109,7 @@ Usage
     --help              Show this message and exit.
 
 
-  **tpcli list --help**
+  tpcli list --help
   Usage: -c list [OPTIONS]
 
   List entry from Teampass.
@@ -123,7 +123,7 @@ Usage
     --help    Show this message and exit.
 
 
-  **tpcli search --help**
+  tpcli search --help
   Usage: -c search [OPTIONS] TEXT
 
   Search entry in Teampass.
