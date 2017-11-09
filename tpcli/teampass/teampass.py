@@ -18,10 +18,10 @@ class TeampassClient:
 
     def list(self, type):
         if type in self.TYPE_MODIFICATION:
-            type = self.TYPE_MODIFICATION[type]
+            local_type = self.TYPE_MODIFICATION[type]
 
         url = '{0}/list/{1}?apikey={2}'\
-              .format(self.api_endpoint, type, self.api_key)
+              .format(self.api_endpoint, local_type, self.api_key)
         req = requests.get(url, verify=False)
         if req.status_code != 200:
             raise TeampassHttpException(req.status_code, req.json()['err'])
@@ -48,10 +48,10 @@ class TeampassClient:
 
     def search(self, type, search_string):
         if type in self.TYPE_MODIFICATION:
-            type = self.TYPE_MODIFICATION[type]
+            local_type = self.TYPE_MODIFICATION[type]
 
         url = '{0}/find/{1}/{2}?apikey={3}'\
-              .format(self.api_endpoint, type, search_string, self.api_key)
+              .format(self.api_endpoint, local_type, search_string, self.api_key)
         req = requests.get(url, verify=False)
         if req.status_code != 200:
             if req.json() and 'err' in req.json():
