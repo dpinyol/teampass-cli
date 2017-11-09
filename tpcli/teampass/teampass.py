@@ -71,7 +71,7 @@ class TeampassClient:
                 description = description.replace('\\r\\n', '<br />')
 
             if not pwd:
-                pwd = pwgen(16, symbols=False, ambiguous=False)
+                pwd = pwgen(16, symbols=False, no_ambiguous=True)
 
             payload_data = ['' if item is None else item for item in [label, pwd, description, folder, login, '', '', '', '1']]
             payload = base64.b64encode(string.join(payload_data, ';'))
