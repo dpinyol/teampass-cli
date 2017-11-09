@@ -5,8 +5,8 @@ Teampass-cli - teampass command-line interface
 
 What is this?
 *************
-It is a simple command line interface for [Teampass](https://teampass.net).
-`teampass-cli`_ provides an executable called ``tplci``
+It is a simple command line interface for Teampass (https://teampass.net).
+``teampass-cli`` provides an executable called ``tplci``
 
 **IMPORTANT**: To use the teampass-cli, you need to modify the file `api/functions.php`. The modified version of the file `api/functions.php` is located in the lib folder.
 
