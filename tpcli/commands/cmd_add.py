@@ -9,7 +9,7 @@ from tpcli.cli import pass_context
 @click.option('--folder', 'type', flag_value='folder', help='add folder')
 @click.option('--title', required=True, help='title for new folder or label for new item')
 @click.option('--login', help='login value for new item')
-@click.option('--password', help='password value for new item')
+@click.option('--password', help='password value for new item (if empty generate random 16-symbols password with no no ambiguous option)')
 @click.option('--description', help='description value for new item')
 @click.option('--folder-id', required=True, help='parent folder id')
 @click.option('--list', 'view', flag_value='list', default=True, help='format output as list')

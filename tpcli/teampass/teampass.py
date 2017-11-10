@@ -155,7 +155,7 @@ class TeampassClient:
                                           ('Login', item['login']),
                                           ('Password', item['pw']),
                                           ('Description', item['description'].replace('&nbsp;', ' ').replace('<br />', '\r\n             ')),
-                                          ('Path', item['path'])
+                                          ('Path', '{} (ID: {})'.format(item['path'], item['folder_id']))
                                           ]))
         return result
 
