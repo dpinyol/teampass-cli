@@ -68,13 +68,13 @@ class TeampassClient:
     def add(self, type, label, login, pwd, description, folder):
         if type == 'item':
             if description:
-                description = description.replace('\\r\\n', '<br />')
+                description = u'{}'.format(description.replace('\\r\\n', '<br />'))
 
             if not pwd:
                 pwd = pwgen(16, symbols=False, no_ambiguous=True)
 
             payload_data = ['' if item is None else item for item in [label, pwd, description, folder, login, '', '', '', '1']]
-            payload = base64.b64encode(string.join(payload_data, ';'))
+            payload = base64.b64encode(string.join(payload_data, ';').encode('utf-8'))
 
         elif type == 'folder':
             payload = base64.b64encode(string.join([label, '0', folder, '0', '0'], ';'))
@@ -119,9 +119,9 @@ class TeampassClient:
     def edit(self, type, id, label, login, pwd, description, folder):
         if type == 'item':
             if description:
-                description = description.replace('\\r\\n', '<br />')
+                description = u'{}'.format(description.replace('\\r\\n', '<br />'))
             payload_data = ['' if item is None else item for item in [label, pwd, description, folder, login, '', '', '', '1']]
-            payload = base64.b64encode(string.join(payload_data, ';'))
+            payload = base64.b64encode(string.join(payload_data, ';').encode('utf-8'))
             url = '{0}/update/{1}/{2}/{3}?apikey={4}'\
                   .format(self.api_endpoint, type, id, payload, self.api_key)
         req = requests.get(url, verify=False)

@@ -4,10 +4,10 @@ class TeampassHttpException(Exception):
         self.http_code = http_code
 
     def __str__(self):
-        return "HTTP CODE: {}, Error: {}".format(self.http_code, self.msg)
+        return u"HTTP CODE: {}, Error: {}".format(self.http_code, self.msg)
 
     def __unicode__(self):
-        return "HTTP CODE: {}, Error: {}".format(self.http_code, self.msg)
+        return u"HTTP CODE: {}, Error: {}".format(self.http_code, self.msg)
 
 
 class TeampassApiException(Exception):
@@ -15,7 +15,7 @@ class TeampassApiException(Exception):
         self.msg = msg
 
     def __str__(self):
-        return "Error: {}".format(self.msg)
+        return u"Error: {}".format(self.msg)
 
     def __unicode__(self):
-        return "Error: {}".format(self.msg)
+        return u"Error: {}".format(self.msg)
