@@ -1,5 +1,4 @@
 import base64
-import string
 import requests
 from collections import OrderedDict
 from tpcli.teampass.exceptions import TeampassHttpException, TeampassApiException
@@ -74,17 +73,16 @@ class TeampassClient:
                 pwd = pwgen(16, symbols=False, no_ambiguous=True)
 
             payload_data = ['' if item is None else item for item in [label, pwd, description, folder, login, '', '', '', '1']]
-            payload = base64.b64encode(string.join(payload_data, ';').encode('utf-8'))
+            payload = base64.b64encode(';'.join(payload_data).encode('utf-8'))
 
         elif type == 'folder':
-            payload = base64.b64encode(string.join([label, '0', folder, '0', '0'], ';'))
+            payload = base64.b64encode(';'.join([label, '0', folder, '0', '0']))
 
         url = '{0}/add/{2}/{3}?apikey={1}'\
               .format(self.api_endpoint,
                       self.api_key,
                       type,
-                      payload)
-
+                      payload.decode('utf-8'))
         req = requests.get(url, verify=False)
         if req.status_code != 200:
             if req.json() and 'err' in req.json():
@@ -121,9 +119,9 @@ class TeampassClient:
             if description:
                 description = u'{}'.format(description.replace('\\r\\n', '<br />'))
             payload_data = ['' if item is None else item for item in [label, pwd, description, folder, login, '', '', '', '1']]
-            payload = base64.b64encode(string.join(payload_data, ';').encode('utf-8'))
+            payload = base64.b64encode(';'.join(payload_data).encode('utf-8'))
             url = '{0}/update/{1}/{2}/{3}?apikey={4}'\
-                  .format(self.api_endpoint, type, id, payload, self.api_key)
+                  .format(self.api_endpoint, type, id, payload.decode('utf-8'), self.api_key)
         req = requests.get(url, verify=False)
 
         if req.status_code != 200:
