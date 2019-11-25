@@ -8,8 +8,24 @@ What is this?
 It is a simple command line interface for Teampass (https://teampass.net).
 ``teampass-cli`` provides an executable called ``tpcli``
 
-**IMPORTANT**: To use the teampass-cli, you need to modify the file ``api/functions.php`` on the server there Teampass was installed. The modified version of the file ``api/functions.php`` is located in the lib folder.
+**IMPORTANT**: To use the teampass-cli, you need to modify the file ``api/functions.php`` on the server there Teampass was installed. The modified version of the file ``api/functions.php`` is located in the lib folder in this repository.
+This moodified version of functions.php is tested with Teampass 2.1.27.35 and 2.1.27.36
 
+Current version of functions.php is synchronized with the upstream version in Teampass repository.
+
+As for the changes in the functions.php that have been made:
+**API methods have been added to the function _restGet()_:**
+1. For CLI **list** sub-command:
+- /list/folders
+- /list/items
+
+2. Get item and folder by ID:
+- /get/item/{item_id}
+- /get/folder/{folder_id}
+
+3. Search item and folder by Title:
+- /find/items/{item_title}
+- /find/items/{folder_title}
 
 Installation
 ************
