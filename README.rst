@@ -14,17 +14,25 @@ This moodified version of functions.php is tested with Teampass 2.1.27.35 and 2.
 Current version of functions.php is synchronized with the upstream version in Teampass repository.
 
 As for the changes in the functions.php that have been made:
-**API methods have been added to the function _restGet()_:**
+
+**API methods have been added to the function restGet():**
+
 1. For CLI **list** sub-command:
+
 - /list/folders
+
 - /list/items
 
 2. Get item and folder by ID:
+
 - /get/item/{item_id}
+
 - /get/folder/{folder_id}
 
 3. Search item and folder by Title:
+
 - /find/items/{item_title}
+
 - /find/items/{folder_title}
 
 Installation
