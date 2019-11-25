@@ -73,7 +73,8 @@ class TeampassClient:
                 pwd = pwgen(16, symbols=False, no_ambiguous=True)
 
             payload_data = ['' if item is None else item for item in [label, pwd, description, folder, login, '', '', '', '1']]
-            payload = base64.b64encode(';'.join(payload_data).encode('utf-8'))
+            payload_data = [base64.b64encode(data.encode('utf-8')) for data in payload_data]
+            payload = b';'.join(payload_data)
 
         elif type == 'folder':
             payload = base64.b64encode(';'.join([label, '0', folder, '0', '0']))

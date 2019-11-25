@@ -1186,7 +1186,6 @@ function restGet()
                     restError('EMPTY');
                 }
             }
-
         } elseif ($GLOBALS['request'][0] == "add") {
             if ($GLOBALS['request'][1] == "item") {
                 /*
@@ -1194,20 +1193,20 @@ function restGet()
                 */
                 if ($GLOBALS['request'][2] !== "") {
                     // get sent parameters
-                    $params = explode(';', urlSafeB64Decode($GLOBALS['request'][2]));
+                    $params = explode(';', $GLOBALS['request'][2]);
                     if (count($params) != 9) {
                         restError('ITEMBADDEFINITION');
                     }
 
-                    $item_label = $params[0];
-                    $item_pwd = $params[1];
-                    $item_desc = $params[2];
-                    $item_folder_id = $params[3];
-                    $item_login = $params[4];
-                    $item_email = $params[5];
-                    $item_url = $params[6];
-                    $item_tags = $params[7];
-                    $item_anyonecanmodify = $params[8];
+                    $item_label = urlSafeB64Decode($params[0]);
+                    $item_pwd = urlSafeB64Decode($params[1]);
+                    $item_desc = urlSafeB64Decode($params[2]);
+                    $item_folder_id = urlSafeB64Decode($params[3]);
+                    $item_login = urlSafeB64Decode($params[4]);
+                    $item_email = urlSafeB64Decode($params[5]);
+                    $item_url = urlSafeB64Decode($params[6]);
+                    $item_tags = urlSafeB64Decode($params[7]);
+                    $item_anyonecanmodify = urlSafeB64Decode($params[8]);
 
                     // do some checks
                     if (!empty($item_label) && !empty($item_pwd) && !empty($item_folder_id)) {
@@ -1430,6 +1429,8 @@ function restGet()
                                 'fonction_id' => $rolesList,
                                 'groupes_interdits' => '0',
                                 'groupes_visibles' => '0',
+                                'encrypted_psk' => '',
+                                'fonction_id' => '',
                                 'isAdministratedByRole' => empty($resRole) ? '0' : $resRole['id']
                             )
                         );
@@ -1898,7 +1899,7 @@ function restGet()
                     restError('USERLOGINEMPTY');
                 }
                 // Check if user already exists
-                $data = DB::query(
+                $data = DB::queryfirstrow(
                     "SELECT id, fonction_id, groupes_interdits, groupes_visibles, personal_folder
                     FROM ".prefix_table("users")."
                     WHERE login LIKE %ss",
@@ -1958,6 +1959,7 @@ function restGet()
                                 'fonction_id' => $rolesList,
                                 'groupes_interdits' => '0',
                                 'groupes_visibles' => '0',
+                                'fonction_id' => '',
                                 'isAdministratedByRole' => empty($resRole) ? '0' : $resRole['id']
                             ),
                             "id = %i",
@@ -1998,7 +2000,7 @@ function restGet()
                             ""
                         );
 
-                        echo '{"status":"user added"}';
+                        echo '{"status":"user edited"}';
                     } catch (PDOException $ex) {
                         echo '<br />'.$ex->getMessage();
                     }
