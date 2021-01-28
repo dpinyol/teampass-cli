@@ -422,7 +422,7 @@ function restGet()
                 $tree = new SplClassLoader('Tree\NestedTree', '../includes/libraries');
                 $tree->register();
                 $tree = new Tree\NestedTree\NestedTree(prefix_table("nested_tree"), 'id', 'parent_id', 'title');
- 
+
                 $response = DB::query(
                     "SELECT id, parent_id, title
                     FROM ".prefix_table("nested_tree")."
@@ -439,7 +439,7 @@ function restGet()
                             $path .= " > ".stripslashes($elem->title);
                         }
                     }
- 
+
                     // prepare output
                     $json[$inc]['id'] = $data['id'];
                     $json[$inc]['parent_id'] = $data['parent_id'];
@@ -448,19 +448,19 @@ function restGet()
                     $inc++;
                 }
             }
- 
+
             if ($GLOBALS['request'][1] == "items") {
                 /*
                 * READ FOLDERS
                 */
- 
+
                 // load library
                 require_once '../sources/SplClassLoader.php';
                 //Load Tree
                 $tree = new SplClassLoader('Tree\NestedTree', '../includes/libraries');
                 $tree->register();
                 $tree = new Tree\NestedTree\NestedTree(prefix_table("nested_tree"), 'id', 'parent_id', 'title');
- 
+
                 // get items in this folder
                 $response = DB::query(
                     "SELECT id, label, login, pw, pw_iv, url, id_tree, description, email
@@ -480,7 +480,7 @@ function restGet()
                             $path .= " > ".stripslashes($elem->title);
                         }
                     }
- 
+
                     // prepare output
                     $json[$x]['id'] = $data['id'];
                     $json[$x]['label'] = mb_convert_encoding($data['label'], mb_detect_encoding($data['label']), 'UTF-8');
@@ -496,38 +496,38 @@ function restGet()
                     $json[$x]['pw'] = $crypt_pw['string'];
                     $json[$x]['folder_id'] = $data['id_tree'];
                     $json[$x]['path'] = $path;
- 
+
                     $x++;
                 }
             }
- 
+
             if (isset($json) && $json) {
                 echo json_encode($json);
             } else {
                 restError('EMPTY');
             }
- 
+
         } elseif ($GLOBALS['request'][0] == "get") {
             if ($GLOBALS['request'][1] == "item") {
                 /*
                 * GET ITEM by id
                 */
- 
+
                 // load library
                 require_once '../sources/SplClassLoader.php';
                 //Load Tree
                 $tree = new SplClassLoader('Tree\NestedTree', '../includes/libraries');
                 $tree->register();
                 $tree = new Tree\NestedTree\NestedTree(prefix_table("nested_tree"), 'id', 'parent_id', 'title');
- 
+
                 // get parameters
                 $item = $GLOBALS['request'][2];
- 
+
                 // only accepts numeric
                 if (!is_numeric($item)) {
                     restError('ITEM_MALFORMED');
                 }
- 
+
                 DB::debugMode(false);
                 $response = DB::query(
                     "SELECT id,label,login,pw, pw_iv, url, id_tree, description, email
@@ -536,9 +536,9 @@ function restGet()
                     id = %i",
                     $item
                 );
- 
+
                 $x = 0;
- 
+
                 foreach ($response as $data)
                 {
                     // build the path to the Item
@@ -551,7 +551,7 @@ function restGet()
                             $path .= " > ".stripslashes($elem->title);
                         }
                     }
- 
+
                     // prepare output
                     $json[$x]['id'] = $data['id'];
                     $json[$x]['label'] = mb_convert_encoding($data['label'], mb_detect_encoding($data['label']), 'UTF-8');
@@ -563,7 +563,7 @@ function restGet()
                     $json[$x]['pw'] = $crypt_pw['string'];
                     $json[$x]['folder_id'] = $data['id_tree'];
                     $json[$x]['path'] = $path;
- 
+
                     $x++;
                 }
                 if (isset($json) && $json) {
@@ -576,14 +576,14 @@ function restGet()
                 /*
                 * FIND FOLDER by ID
                 */
- 
+
                 // load library
                 require_once '../sources/SplClassLoader.php';
                 //Load Tree
                 $tree = new SplClassLoader('Tree\NestedTree', '../includes/libraries');
                 $tree->register();
                 $tree = new Tree\NestedTree\NestedTree(prefix_table("nested_tree"), 'id', 'parent_id', 'title');
- 
+
                 // get parameters
                 $item = $GLOBALS['request'][2];
                 DB::debugMode(false);
@@ -606,13 +606,13 @@ function restGet()
                             $path .= " > ".stripslashes($elem->title);
                         }
                     }
- 
+
                     // prepare output
                     $json[$x]['id'] = $data['id'];
                     $json[$x]['parent_id'] = $data['parent_id'];
                     $json[$x]['title'] = mb_convert_encoding($data['title'], mb_detect_encoding($data['title']), 'UTF-8');
                     $json[$x]['path'] = $path;
- 
+
                     $x++;
                 }
                 if (isset($json) && $json) {
@@ -665,7 +665,7 @@ function restGet()
                         }
                     }
                     $folder_str = array_filter($folder_arr);
-    
+
                     // get ids
                     if (is_array($folder_str)) {
                         $condition = "id_tree IN %ls";
@@ -1776,8 +1776,10 @@ function restGet()
             */
                 if ($GLOBALS['request'][2] !== "" && is_numeric($GLOBALS['request'][2])) {
                     // get sent parameters
-                    $params = explode(';', urlSafeB64Decode($GLOBALS['request'][3]));
-
+                    $params = explode(';', $GLOBALS['request'][3]);
+                    foreach ($params as $idx => $value) {
+                        $params[$idx]=urlSafeB64Decode($value);
+                    }
                     if (!empty($params[0])) {
                         if ($params[1] < 0) {
                             restError('NO_DATA_EXIST');
@@ -2819,7 +2821,7 @@ function restGet()
                 $user_login = urlSafeB64Decode($GLOBALS['request'][2]);
                 $user_pwd = urlSafeB64Decode($GLOBALS['request'][3]);
                 $user_saltkey = urlSafeB64Decode($GLOBALS['request'][4]);
-                
+
 
                 // is user granted?
                 $userData = DB::queryFirstRow(

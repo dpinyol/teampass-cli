@@ -2,7 +2,6 @@ import base64
 import requests
 from collections import OrderedDict
 from tpcli.teampass.exceptions import TeampassHttpException, TeampassApiException
-from treelib import Tree
 from tabulate import tabulate
 from pwgen import pwgen
 
@@ -77,7 +76,7 @@ class TeampassClient:
             payload = b';'.join(payload_data)
 
         elif type == 'folder':
-            payload = base64.b64encode(';'.join([label, '0', folder, '0', '0']))
+            payload = base64.b64encode((';'.join([label, '0', folder, '0', '0']).encode('utf-8')))
 
         url = '{0}/add/{2}/{3}?apikey={1}'\
               .format(self.api_endpoint,
@@ -120,11 +119,18 @@ class TeampassClient:
             if description:
                 description = u'{}'.format(description.replace('\\r\\n', '<br />'))
             payload_data = ['' if item is None else item for item in [label, pwd, description, folder, login, '', '', '', '1']]
-            payload = base64.b64encode(';'.join(payload_data).encode('utf-8'))
+            payload_data = [base64.b64encode(data.encode('utf-8')) for data in payload_data]
+            payload = b';'.join(payload_data)
             url = '{0}/update/{1}/{2}/{3}?apikey={4}'\
                   .format(self.api_endpoint, type, id, payload.decode('utf-8'), self.api_key)
-        req = requests.get(url, verify=False)
+        elif type == 'folder':
+            payload_data = ['' if item is None else item for item in [label, '', '', '']]
+            payload_data = [base64.b64encode(data.encode('utf-8')) for data in payload_data]
+            payload = b';'.join(payload_data)
+            url = '{0}/update/{1}/{2}/{3}?apikey={4}'\
+                  .format(self.api_endpoint, type, id, payload.decode('utf-8'), self.api_key)
 
+        req = requests.get(url, verify=False)
         if req.status_code != 200:
             if req.json() and 'err' in req.json():
                 raise TeampassApiException(req.json()['err'])
@@ -176,11 +182,3 @@ class TeampassClient:
 
     def print_result_table(self, data):
         return tabulate(data, headers='keys', tablefmt='psql')
-
-    def print_result_tree(self, data):
-        tree = Tree()
-        tree.create_node('', '0')
-
-        for item in data:
-            tree.create_node(u'{} ({})'.format(item['Title'], item['ID']), item['ID'], parent=item['Parent_ID'])
-        return tree.show()

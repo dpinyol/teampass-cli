@@ -9,7 +9,6 @@ from tpcli.cli import pass_context
 @click.option('--folder', 'type', flag_value='folder', help='show folders')
 @click.option('--list', 'view', flag_value='list', default=True, help='format output as list')
 @click.option('--table', 'view', flag_value='table', help='format output as table')
-@click.option('--tree', 'view', flag_value='tree', help='format output as tree')
 @pass_context
 def cli(ctx, type, view):
     """List entry from Teampass."""
@@ -23,8 +22,3 @@ def cli(ctx, type, view):
             ctx.log(ctx.tp.print_result_table(data))
         elif view == 'list':
             ctx.log(ctx.tp.print_result_list(type, data))
-        elif view == 'tree':
-            if type == 'folder':
-                ctx.log(ctx.tp.print_result_tree(data))
-            else:
-                ctx.logerr('Format output as tree is only available for the folder type')
